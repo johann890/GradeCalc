@@ -25,21 +25,27 @@ public class gradecalc
         return (amount * score) / 100;
     }
     
-    public static void main(String[] args) {
+   public static void main(String[] args) {
         boolean moreassignments = true;
         Scanner myObj = new Scanner(System.in);
+        
+        List<Double> amounts = new ArrayList<Double>();
+        
+        List<Integer> results = new ArrayList<Integer>();
+        
         
         while(moreassignments) {
             System.out.println("Please enter name and amount of 1st assessment: ");
             String name = myObj.next();
-            double amount = myObj.nextDouble(); 
+            double amount = myObj.nextDouble(); ;
             System.out.println("Please enter your score on this assessment: ");
             int score = myObj.nextInt();
             
-            double result = calcG(amount, score);
-            System.out.println("This assignment is worth " + (int)result + " of your final grade.\n");
-
-            myObj.nextLine(); // Consume the newline left-over
+            int result = (int)calcG(amount, score);
+            System.out.println("This assignment is worth " + result + " of your final grade.\n");
+            results.add(result);
+            
+            myObj.nextLine();
             System.out.println("Do you have any other assignments to submit? ");
             String bool = myObj.nextLine();
             
@@ -49,6 +55,20 @@ public class gradecalc
                 System.out.println("* * *\n");
             }
         }
+        
+        int resultTotal = results.stream().mapToInt(f -> f.intValue()).sum();
+        Double amountTotal = amounts.stream().mapToDouble(f -> f.doubleValue()).sum();
+        
+        
+        System.out.println("In total, you have achieved " + resultTotal + "% of your grade");
+        
+        if(amountTotal < 100){
+            System.out.println("However, you still have other assessments yet to be completed.");
+        }
+        
+
+        
+        
         
         System.out.println("bye!");
     }
