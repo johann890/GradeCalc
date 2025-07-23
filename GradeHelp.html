@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeHelp</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Home Page Styles */
+        .home-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            animation: shimmer 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .home-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+            z-index: 1;
+        }
+
+        .home-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+            z-index: 1;
+        }
+
+        .enter-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            z-index: 1;
+        }
+
+        .enter-btn:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            background: #f5f5f7;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+
+        .gpa-display {
+            text-align: center;
+        }
+
+        .gpa-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #007AFF;
+        }
+
+        .gpa-label {
+            font-size: 0.9rem;
+            color: #86868b;
+        }
+
+        .add-course-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-course-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .course-grade {
+            text-align: right;
+        }
+
+        .grade-percentage {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #007AFF;
+        }
+
+        .grade-letter {
+            font-size: 1rem;
+            color: #86868b;
+        }
+
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #86868b;
+        }
+
+        .assignments-list {
+            margin-top: 1rem;
+        }
+
+        .assignment-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .assignment-item:hover {
+            background: #e9ecef;
+        }
+
+        .assignment-info {
+            flex: 1;
+        }
+
+        .assignment-name {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.2rem;
+        }
+
+        .assignment-details {
+            font-size: 0.9rem;
+            color: #86868b;
+        }
+
+        .assignment-score {
+            text-align: right;
+            margin-right: 1rem;
+        }
+
+        .score-value {
+            font-weight: 600;
+            color: #007AFF;
+        }
+
+        .assignment-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit {
+            background: #34C759;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #FF3B30;
+            color: white;
+        }
+
+        .btn-small:hover {
+            transform: scale(1.05);
+        }
+
+        .add-assignment-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 2px dashed #007AFF;
+            color: #007AFF;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .add-assignment-btn:hover {
+            background: rgba(0, 122, 255, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #86868b;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e5e5e7;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .delete-course-btn {
+            background: #FF3B30;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delete-course-btn:hover {
+            background: #d70015;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #86868b;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e5e7;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #34C759);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .home-title {
+                font-size: 2.5rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Page -->
+    <div class="home-page" id="homePage">
+        <h1 class="home-title">GradeHelp</h1>
+        <p class="home-subtitle">Your smart GPA calculator and grade tracker</p>
+        <button class="enter-btn" onclick="enterApp()">Enter App</button>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <div class="logo">GradeHelp</div>
+            <div class="gpa-display">
+                <div class="gpa-value" id="overallGPA">0.00</div>
+                <div class="gpa-label">Overall GPA</div>
+            </div>
+            <button class="add-course-btn" onclick="openCourseModal()">+ Add Course</button>
+        </div>
+
+        <div class="container">
+            <div class="courses-grid" id="coursesGrid">
+                <div class="empty-state">
+                    <h3>No courses yet</h3>
+                    <p>Add your first course to get started!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Modal -->
+    <div class="modal" id="courseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="courseModalTitle">Add Course</h2>
+                <button class="close-btn" onclick="closeCourseModal()">&times;</button>
+            </div>
+            <form id="courseForm">
+                <div class="form-group">
+                    <label class="form-label">Course Name</label>
+                    <input type="text" class="form-input" id="courseName" required>
+                </div>
+                <button type="submit" class="btn-primary">Save Course</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assignment Modal -->
+    <div class="modal" id="assignmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="assignmentModalTitle">Add Assignment</h2>
+                <button class="close-btn" onclick="closeAssignmentModal()">&times;</button>
+            </div>
+            <form id="assignmentForm">
+                <div class="form-group">
+                    <label class="form-label">Assignment Name</label>
+                    <input type="text" class="form-input" id="assignmentName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Score Received</label>
+                        <input type="number" class="form-input" id="scoreReceived" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max Score</label>
+                        <input type="number" class="form-input" id="maxScore" step="0.1" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Weight (%)</label>
+                        <input type="number" class="form-input" id="weight" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Due Date</label>
+                        <input type="date" class="form-input" id="dueDate">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Save Assignment</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let courses = [];
+        let currentCourseId = null;
+        let currentAssignmentId = null;
+        let editingCourse = false;
+        let editingAssignment = false;
+
+        // Utility Functions
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function calculatePercentage(score, maxScore) {
+            return maxScore > 0 ? (score / maxScore) * 100 : 0;
+        }
+
+        function getLetterGrade(percentage) {
+            if (percentage >= 97) return 'A+';
+            if (percentage >= 93) return 'A';
+            if (percentage >= 90) return 'A-';
+            if (percentage >= 87) return 'B+';
+            if (percentage >= 83) return 'B';
+            if (percentage >= 80) return 'B-';
+            if (percentage >= 77) return 'C+';
+            if (percentage >= 73) return 'C';
+            if (percentage >= 70) return 'C-';
+            if (percentage >= 67) return 'D+';
+            if (percentage >= 65) return 'D';
+            return 'F';
+        }
+
+        function getGPAValue(letterGrade) {
+            const gpaMap = {
+                'A+': 4.0, 'A': 4.0, 'A-': 3.7,
+                'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7,
+                'D+': 1.3, 'D': 1.0, 'F': 0.0
+            };
+            return gpaMap[letterGrade] || 0.0;
+        }
+
+        function calculateCourseGrade(course) {
+            if (!course.assignments || course.assignments.length === 0) {
+                return { percentage: 0, letterGrade: 'F', gpaValue: 0.0 };
+            }
+
+            let totalWeightedScore = 0;
+            let totalWeight = 0;
+
+            course.assignments.forEach(assignment => {
+                const percentage = calculatePercentage(assignment.scoreReceived, assignment.maxScore);
+                totalWeightedScore += percentage * assignment.weight;
+                totalWeight += assignment.weight;
+            });
+
+            const finalPercentage = totalWeight > 0 ? totalWeightedScore / totalWeight : 0;
+            const letterGrade = getLetterGrade(finalPercentage);
+            const gpaValue = getGPAValue(letterGrade);
+
+            return {
+                percentage: Math.round(finalPercentage * 100) / 100,
+                letterGrade,
+                gpaValue
+            };
+        }
+
+        function calculateOverallGPA() {
+            if (courses.length === 0) return 0.0;
+
+            let totalGPA = 0;
+            let validCourses = 0;
+
+            courses.forEach(course => {
+                const grade = calculateCourseGrade(course);
+                totalGPA += grade.gpaValue;
+                validCourses++;
+            });
+
+            return validCourses > 0 ? Math.round((totalGPA / validCourses) * 100) / 100 : 0.0;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'No due date';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+        }
+
+        // App Navigation
+        function enterApp() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            loadCourses();
+        }
+
+        // Course Management
+        function openCourseModal(courseId = null) {
+            editingCourse = courseId !== null;
+            currentCourseId = courseId;
+            
+            const modal = document.getElementById('courseModal');
+            const title = document.getElementById('courseModalTitle');
+            const nameInput = document.getElementById('courseName');
+            
+            if (editingCourse) {
+                const course = courses.find(c => c.id === courseId);
+                title.textContent = 'Edit Course';
+                nameInput.value = course.name;
+            } else {
+                title.textContent = 'Add Course';
+                nameInput.value = '';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeCourseModal() {
+            document.getElementById('courseModal').classList.remove('active');
+            document.getElementById('courseForm').reset();
+        }
+
+        function saveCourse(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('courseName').value.trim();
+            if (!name) return;
+
+            if (editingCourse) {
+                const course = courses.find(c => c.id === currentCourseId);
+                course.name = name;
+            } else {
+                const newCourse = {
+                    id: generateId(),
+                    name: name,
+                    assignments: []
+                };
+                courses.push(newCourse);
+            }
+
+            saveCourses();
+            renderCourses();
+            closeCourseModal();
+        }
+
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
+                courses = courses.filter(course => course.id !== courseId);
+                saveCourses();
+                renderCourses();
+            }
+        }
+
+        // Assignment Management
+        function openAssignmentModal(courseId, assignmentId = null) {
+            editingAssignment = assignmentId !== null;
+            currentCourseId = courseId;
+            currentAssignmentId = assignmentId;
+            
+            const modal = document.getElementById('assignmentModal');
+            const title = document.getElementById('assignmentModalTitle');
+            
+            if (editingAssignment) {
+                const course = courses.find(c => c.id === courseId);
+                const assignment = course.assignments.find(a => a.id === assignmentId);
+                title.textContent = 'Edit Assignment';
+                
+                document.getElementById('assignmentName').value = assignment.name;
+                document.getElementById('scoreReceived').value = assignment.scoreReceived;
+                document.getElementById('maxScore').value = assignment.maxScore;
+                document.getElementById('weight').value = assignment.weight;
+                document.getElementById('dueDate').value = assignment.dueDate || '';
+            } else {
+                title.textContent = 'Add Assignment';
+                document.getElementById('assignmentForm').reset();
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeAssignmentModal() {
+            document.getElementById('assignmentModal').classList.remove('active');
+            document.getElementById('assignmentForm').reset();
+        }
+
+        function saveAssignment(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('assignmentName').value.trim();
+            const scoreReceived = parseFloat(document.getElementById('scoreReceived').value);
+            const maxScore = parseFloat(document.getElementById('maxScore').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const dueDate = document.getElementById('dueDate').value;
+
+            if (!name || isNaN(scoreReceived) || isNaN(maxScore) || isNaN(weight)) return;
+
+            const course = courses.find(c => c.id === currentCourseId);
+            
+            if (editingAssignment) {
+                const assignment = course.assignments.find(a => a.id === currentAssignmentId);
+                assignment.name = name;
+                assignment.scoreReceived = scoreReceived;
+                assignment.maxScore = maxScore;
+                assignment.weight = weight;
+                assignment.dueDate = dueDate;
+            } else {
+                const newAssignment = {
+                    id: generateId(),
+                    name,
+                    scoreReceived,
+                    maxScore,
+                    weight,
+                    dueDate
+                };
+                course.assignments.push(newAssignment);
+            }
+
+            saveCourses();
+            renderCourses();
+            closeAssignmentModal();
+        }
+
+        function deleteAssignment(courseId, assignmentId) {
+            if (confirm('Are you sure you want to delete this assignment?')) {
+                const course = courses.find(c => c.id === courseId);
+                course.assignments = course.assignments.filter(a => a.id !== assignmentId);
+                saveCourses();
+                renderCourses();
+            }
+        }
+
+        // Rendering
+        function renderCourses() {
+            const grid = document.getElementById('coursesGrid');
+            
+            if (courses.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No courses yet</h3>
+                        <p>Add your first course to get started!</p>
+                    </div>
+                `;
+                document.getElementById('overallGPA').textContent = '0.00';
+                return;
+            }
+
+            grid.innerHTML = courses.map(course => {
+                const grade = calculateCourseGrade(course);
+                const assignmentCount = course.assignments.length;
+                const totalWeight = course.assignments.reduce((sum, a) => sum + a.weight, 0);
+
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card';
+                courseCard.innerHTML = `
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">${course.name}</h3>
+                            <button class="delete-course-btn" data-course-id="${course.id}">Delete Course</button>
+                        </div>
+                        <div class="course-grade">
+                            <div class="grade-percentage">${grade.percentage}%</div>
+                            <div class="grade-letter">${grade.letterGrade} (${grade.gpaValue})</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(grade.percentage, 100)}%"></div>
+                    </div>
+                    
+                    <div class="course-stats">
+                        <div class="stat">
+                            <div class="stat-value">${assignmentCount}</div>
+                            <div class="stat-label">Assignments</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${totalWeight}%</div>
+                            <div class="stat-label">Total Weight</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${grade.gpaValue}</div>
+                            <div class="stat-label">GPA Points</div>
+                        </div>
+                    </div>
+                    
+                    <div class="assignments-list">
+                        ${course.assignments.map(assignment => {
+                            const percentage = calculatePercentage(assignment.scoreReceived, assignment.maxScore);
+                            return `
+                                <div class="assignment-item">
+                                    <div class="assignment-info">
+                                        <div class="assignment-name">${assignment.name}</div>
+                                        <div class="assignment-details">
+                                            Weight: ${assignment.weight}% • Due: ${formatDate(assignment.dueDate)}
+                                        </div>
+                                    </div>
+                                    <div class="assignment-score">
+                                        <div class="score-value">${assignment.scoreReceived}/${assignment.maxScore}</div>
+                                        <div class="assignment-details">${Math.round(percentage * 100) / 100}%</div>
+                                    </div>
+                                    <div class="assignment-actions">
+                                        <button class="btn-small btn-edit" data-course-id="${course.id}" data-assignment-id="${assignment.id}" data-action="edit">Edit</button>
+                                        <button class="btn-small btn-delete" data-course-id="${course.id}" data-assignment-id="${assignment.id}" data-action="delete">Delete</button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    
+                    <button class="add-assignment-btn" data-course-id="${course.id}" data-action="add">
+                        + Add Assignment
+                    </button>
+                `;
+
+                // Add event listeners for this course card
+                const deleteCourseBtn = courseCard.querySelector('.delete-course-btn');
+                deleteCourseBtn.addEventListener('click', () => deleteCourse(course.id));
+
+                const addAssignmentBtn = courseCard.querySelector('.add-assignment-btn');
+                addAssignmentBtn.addEventListener('click', () => openAssignmentModal(course.id));
+
+                // Add event listeners for assignment buttons
+                const editBtns = courseCard.querySelectorAll('[data-action="edit"]');
+                const deleteBtns = courseCard.querySelectorAll('[data-action="delete"]');
+
+                editBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const courseId = btn.getAttribute('data-course-id');
+                        const assignmentId = btn.getAttribute('data-assignment-id');
+                        openAssignmentModal(courseId, assignmentId);
+                    });
+                });
+
+                deleteBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const courseId = btn.getAttribute('data-course-id');
+                        const assignmentId = btn.getAttribute('data-assignment-id');
+                        deleteAssignment(courseId, assignmentId);
+                    });
+                });
+
+                return courseCard;
+            });
+
+            // Clear the grid and append all course cards
+            grid.innerHTML = '';
+            courses.forEach(course => {
+                const grade = calculateCourseGrade(course);
+                const assignmentCount = course.assignments.length;
+                const totalWeight = course.assignments.reduce((sum, a) => sum + a.weight, 0);
+
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card';
+                courseCard.innerHTML = `
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">${course.name}</h3>
+                            <button class="delete-course-btn">Delete Course</button>
+                        </div>
+                        <div class="course-grade">
+                            <div class="grade-percentage">${grade.percentage}%</div>
+                            <div class="grade-letter">${grade.letterGrade} (${grade.gpaValue})</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(grade.percentage, 100)}%"></div>
+                    </div>
+                    
+                    <div class="course-stats">
+                        <div class="stat">
+                            <div class="stat-value">${assignmentCount}</div>
+                            <div class="stat-label">Assignments</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${totalWeight}%</div>
+                            <div class="stat-label">Total Weight</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${grade.gpaValue}</div>
+                            <div class="stat-label">GPA Points</div>
+                        </div>
+                    </div>
+                    
+                    <div class="assignments-list">
+                        ${course.assignments.map(assignment => {
+                            const percentage = calculatePercentage(assignment.scoreReceived, assignment.maxScore);
+                            return `
+                                <div class="assignment-item">
+                                    <div class="assignment-info">
+                                        <div class="assignment-name">${assignment.name}</div>
+                                        <div class="assignment-details">
+                                            Weight: ${assignment.weight}% • Due: ${formatDate(assignment.dueDate)}
+                                        </div>
+                                    </div>
+                                    <div class="assignment-score">
+                                        <div class="score-value">${assignment.scoreReceived}/${assignment.maxScore}</div>
+                                        <div class="assignment-details">${Math.round(percentage * 100) / 100}%</div>
+                                    </div>
+                                    <div class="assignment-actions">
+                                        <button class="btn-small btn-edit">Edit</button>
+                                        <button class="btn-small btn-delete">Delete</button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    
+                    <button class="add-assignment-btn">+ Add Assignment</button>
+                `;
+
+                // Add event listeners for this course card
+                const deleteCourseBtn = courseCard.querySelector('.delete-course-btn');
+                deleteCourseBtn.addEventListener('click', () => deleteCourse(course.id));
+
+                const addAssignmentBtn = courseCard.querySelector('.add-assignment-btn');
+                addAssignmentBtn.addEventListener('click', () => openAssignmentModal(course.id));
+
+                // Add event listeners for assignment buttons
+                const assignmentItems = courseCard.querySelectorAll('.assignment-item');
+                assignmentItems.forEach((item, index) => {
+                    const assignment = course.assignments[index];
+                    const editBtn = item.querySelector('.btn-edit');
+                    const deleteBtn = item.querySelector('.btn-delete');
+
+                    editBtn.addEventListener('click', () => openAssignmentModal(course.id, assignment.id));
+                    deleteBtn.addEventListener('click', () => deleteAssignment(course.id, assignment.id));
+                });
+
+                grid.appendChild(courseCard);
+            });
+
+            // Update overall GPA
+            document.getElementById('overallGPA').textContent = calculateOverallGPA().toFixed(2);
+        }
+
+        // Data Persistence
+        function saveCourses() {
+            // In a real app, this would save to localStorage or a database
+            // For this demo, we'll just keep it in memory
+        }
+
+        function loadCourses() {
+            // In a real app, this would load from localStorage or a database
+            renderCourses();
+        }
+
+        // Event Listeners
+        document.getElementById('courseForm').addEventListener('submit', saveCourse);
+        document.getElementById('assignmentForm').addEventListener('submit', saveAssignment);
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                if (e.target.id === 'courseModal') {
+                    closeCourseModal();
+                } else if (e.target.id === 'assignmentModal') {
+                    closeAssignmentModal();
+                }
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (document.getElementById('courseModal').classList.contains('active')) {
+                    closeCourseModal();
+                }
+                if (document.getElementById('assignmentModal').classList.contains('active')) {
+                    closeAssignmentModal();
+                }
+            }
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCourses();
+        });
+    </script>
+</body>
+</html>
