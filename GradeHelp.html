@@ -1026,17 +1026,6 @@
             document.getElementById('overallGPA').textContent = calculateOverallGPA().toFixed(2);
         }
 
-        // Data Persistence
-        function saveCourses() {
-            // In a real app, this would save to localStorage or a database
-            // For this demo, we'll just keep it in memory
-        }
-
-        function loadCourses() {
-            // In a real app, this would load from localStorage or a database
-            renderCourses();
-        }
-
         // Event Listeners
         document.getElementById('courseForm').addEventListener('submit', saveCourse);
         document.getElementById('assignmentForm').addEventListener('submit', saveAssignment);
