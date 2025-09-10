@@ -48,6 +48,28 @@
             margin-bottom: 20px;
         }
 
+        .nav-breadcrumb {
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .nav-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #764ba2;
+        }
+
+        .nav-separator {
+            margin: 0 10px;
+            color: #999;
+        }
+
         .semester-courses {
             margin-top: 20px;
         }
@@ -73,12 +95,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .course-summary:hover {
             transform: translateY(-2px);
             background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         .course-info {
@@ -191,12 +215,6 @@
             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
         }
 
-        .weight-grade-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
         .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -245,14 +263,31 @@
         }
 
         .course-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            border-left: 6px solid;
             transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .course-card > * {
+            position: relative;
+            z-index: 1;
         }
 
         .course-card:hover {
@@ -275,13 +310,14 @@
         }
 
         .course-code {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
             padding: 6px 12px;
             border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 600;
             margin-left: 15px;
+            backdrop-filter: blur(10px);
         }
 
         .course-grade-display {
@@ -292,12 +328,13 @@
         }
 
         .letter-grade-display {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
             color: #333;
             padding: 8px 12px;
             border-radius: 10px;
             font-weight: 700;
             font-size: 1rem;
+            backdrop-filter: blur(10px);
         }
 
         .gpa-display {
@@ -314,11 +351,12 @@
         }
 
         .assignment-item {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 10px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         .assignment-header {
@@ -330,7 +368,7 @@
 
         .assignment-name {
             font-weight: 600;
-            color: #444;
+            color: #333;
         }
 
         .assignment-details {
@@ -338,15 +376,16 @@
             gap: 15px;
             align-items: center;
             font-size: 0.9rem;
-            color: #666;
+            color: #555;
         }
 
         .weight-badge {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #8b4513;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
             padding: 4px 8px;
             border-radius: 6px;
             font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         .grade-badge {
@@ -374,7 +413,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -382,14 +421,14 @@
         .stat-card {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
             border-radius: 16px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .stat-number {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
@@ -400,7 +439,53 @@
             color: #666;
             font-weight: 500;
             margin-top: 5px;
-            font-size: 0.9rem;
+            font-size: 1rem;
+        }
+
+        .course-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-detail-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .course-detail-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .course-detail-info h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .course-detail-code {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-view {
+            display: block;
+        }
+
+        .course-view {
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -430,110 +515,133 @@
                 grid-template-columns: 1fr;
             }
 
-            .weight-grade-row {
-                grid-template-columns: 1fr;
+            .course-detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Boardly</h1>
-            <p>Your University Dashboard - Track courses, assignments, and grades</p>
-            
-            <div class="semester-courses">
-                <div class="semester-title">Courses this Semester</div>
-                <div class="courses-grid" id="semesterCourses">
-                    <div class="no-data" style="padding: 20px;">
-                        <p>No courses added yet</p>
+        <!-- Dashboard View -->
+        <div id="dashboardView" class="dashboard-view">
+            <div class="header">
+                <h1>Boardly</h1>
+                <p>Your University Dashboard - Track courses, assignments, and grades</p>
+                
+                <div class="semester-courses">
+                    <div class="semester-title">Courses this Semester</div>
+                    <div class="courses-grid" id="semesterCourses">
+                        <div class="no-data" style="padding: 20px;">
+                            <p>No courses added yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="overallGPA">0.0</div>
+                    <div class="stat-label">Overall GPA</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="overallLetterGrade">N/A</div>
+                    <div class="stat-label">Current Letter Grade</div>
+                </div>
+            </div>
+
+            <div class="main-grid">
+                <div class="sidebar">
+                    <h2>Add New Course</h2>
+                    <form id="courseForm">
+                        <div class="form-group">
+                            <label for="courseName">Course Name</label>
+                            <input type="text" id="courseName" required placeholder="e.g., Computer Science 101">
+                        </div>
+                        <div class="form-group">
+                            <label for="courseCode">Course Code</label>
+                            <input type="text" id="courseCode" required placeholder="e.g., CS101">
+                        </div>
+                        <div class="form-group">
+                            <label>Course Color</label>
+                            <div class="color-picker-group">
+                                <div class="color-option selected" data-color="#667eea" style="background: #667eea;"></div>
+                                <div class="color-option" data-color="#11998e" style="background: #11998e;"></div>
+                                <div class="color-option" data-color="#ff416c" style="background: #ff416c;"></div>
+                                <div class="color-option" data-color="#f093fb" style="background: #f093fb;"></div>
+                                <div class="color-option" data-color="#4facfe" style="background: #4facfe;"></div>
+                                <div class="color-option" data-color="#43e97b" style="background: #43e97b;"></div>
+                                <div class="color-option" data-color="#fa709a" style="background: #fa709a;"></div>
+                                <div class="color-option" data-color="#feca57" style="background: #feca57;"></div>
+                                <div class="color-option" data-color="#48dbfb" style="background: #48dbfb;"></div>
+                                <div class="color-option" data-color="#ff9ff3" style="background: #ff9ff3;"></div>
+                                <div class="color-option" data-color="#54a0ff" style="background: #54a0ff;"></div>
+                                <div class="color-option" data-color="#5f27cd" style="background: #5f27cd;"></div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Add Course</button>
+                    </form>
+                </div>
+
+                <div class="main-content">
+                    <h2 style="margin-bottom: 25px; color: #333;">Your Courses</h2>
+                    <div id="coursesList">
+                        <div class="no-data">
+                            <p>No courses added yet. Add your first course to get started!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="stats-grid" id="statsGrid">
-            <div class="stat-card">
-                <div class="stat-number" id="totalCourses">0</div>
-                <div class="stat-label">Total Courses</div>
+        <!-- Course Detail View -->
+        <div id="courseView" class="course-view">
+            <div class="header">
+                <div class="nav-breadcrumb">
+                    <span class="nav-link" onclick="showDashboard()">Dashboard</span>
+                    <span class="nav-separator">›</span>
+                    <span id="currentCourseName">Course Name</span>
+                </div>
+                
+                <div class="course-detail-header" id="courseDetailHeader">
+                    <div class="course-detail-info">
+                        <h2 id="courseDetailName">Course Name</h2>
+                        <div class="course-detail-code" id="courseDetailCode">Course Code</div>
+                    </div>
+                    <div class="course-grade-display" id="courseDetailGrades">
+                        <!-- Grades will be inserted here -->
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalAssignments">0</div>
-                <div class="stat-label">Assignments</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="completedAssignments">0</div>
-                <div class="stat-label">Completed</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="overallGPA">0.0</div>
-                <div class="stat-label">Overall GPA</div>
-            </div>
-        </div>
 
-        <div class="main-grid">
-            <div class="sidebar">
-                <h2>Add New Course</h2>
-                <form id="courseForm">
-                    <div class="form-group">
-                        <label for="courseName">Course Name</label>
-                        <input type="text" id="courseName" required placeholder="e.g., Computer Science 101">
-                    </div>
-                    <div class="form-group">
-                        <label for="courseCode">Course Code</label>
-                        <input type="text" id="courseCode" required placeholder="e.g., CS101">
-                    </div>
-                    <div class="form-group">
-                        <label>Course Color</label>
-                        <div class="color-picker-group">
-                            <div class="color-option selected" data-color="#667eea" style="background: #667eea;"></div>
-                            <div class="color-option" data-color="#11998e" style="background: #11998e;"></div>
-                            <div class="color-option" data-color="#ff416c" style="background: #ff416c;"></div>
-                            <div class="color-option" data-color="#f093fb" style="background: #f093fb;"></div>
-                            <div class="color-option" data-color="#4facfe" style="background: #4facfe;"></div>
-                            <div class="color-option" data-color="#43e97b" style="background: #43e97b;"></div>
-                            <div class="color-option" data-color="#fa709a" style="background: #fa709a;"></div>
-                            <div class="color-option" data-color="#feca57" style="background: #feca57;"></div>
-                            <div class="color-option" data-color="#48dbfb" style="background: #48dbfb;"></div>
-                            <div class="color-option" data-color="#ff9ff3" style="background: #ff9ff3;"></div>
-                            <div class="color-option" data-color="#54a0ff" style="background: #54a0ff;"></div>
-                            <div class="color-option" data-color="#5f27cd" style="background: #5f27cd;"></div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn">Add Course</button>
-                </form>
-
-                <div id="assignmentForm" style="display: none; margin-top: 30px;">
+            <div class="main-grid">
+                <div class="sidebar">
                     <h2>Add Assignment</h2>
-                    <form id="addAssignmentForm">
+                    <form id="courseAssignmentForm">
                         <div class="form-group">
-                            <label for="selectCourse">Select Course</label>
-                            <select id="selectCourse" required>
-                                <option value="">Choose a course...</option>
-                            </select>
+                            <label for="courseAssignmentName">Assignment Name</label>
+                            <input type="text" id="courseAssignmentName" required placeholder="e.g., Midterm Exam">
                         </div>
                         <div class="form-group">
-                            <label for="assignmentName">Assignment Name</label>
-                            <input type="text" id="assignmentName" required placeholder="e.g., Midterm Exam">
+                            <label for="courseAssignmentWeight">Weight (%)</label>
+                            <input type="number" id="courseAssignmentWeight" min="0" max="100" step="0.1" required placeholder="25">
                         </div>
                         <div class="form-group">
-                            <label for="assignmentWeight">Weight (%)</label>
-                            <input type="number" id="assignmentWeight" min="0" max="100" step="0.1" required placeholder="25">
-                        </div>
-                        <div class="form-group">
-                            <label for="assignmentGrade">Grade (% - Optional)</label>
-                            <input type="number" id="assignmentGrade" min="0" max="100" step="0.1" placeholder="Leave blank if not graded yet">
+                            <label for="courseAssignmentGrade">Grade (% - Optional)</label>
+                            <input type="number" id="courseAssignmentGrade" min="0" max="100" step="0.1" placeholder="Leave blank if not graded yet">
                         </div>
                         <button type="submit" class="btn btn-secondary">Add Assignment</button>
                     </form>
                 </div>
-            </div>
 
-            <div class="main-content">
-                <h2 style="margin-bottom: 25px; color: #333;">Your Courses</h2>
-                <div id="coursesList">
-                    <div class="no-data">
-                        <p>No courses added yet. Add your first course to get started!</p>
+                <div class="main-content">
+                    <h2 style="margin-bottom: 25px; color: #333;">Assignments</h2>
+                    <div id="courseAssignmentsList">
+                        <div class="no-data">
+                            <p>No assignments yet. Add your first assignment!</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -541,10 +649,11 @@
     </div>
 
     <script>
-        // Data storage - using in-memory objects instead of localStorage
+        // Data storage and global variables
         let coursesData = [];
         let assignmentsData = [];
         let selectedCourseColor = '#667eea';
+        let currentCourseId = null;
 
         // Grading system
         const gradingScale = [
@@ -565,7 +674,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadData();
             updateStats();
-            updateCourseSelect();
             updateSemesterOverview();
             setupColorPicker();
         });
@@ -603,6 +711,40 @@
             return 0.0;
         }
 
+        // Navigation functions
+        function showDashboard() {
+            document.getElementById('dashboardView').style.display = 'block';
+            document.getElementById('courseView').style.display = 'none';
+            currentCourseId = null;
+        }
+
+        function showCourse(courseId) {
+            currentCourseId = courseId;
+            const course = coursesData.find(c => c.id === courseId);
+            
+            // Update course detail header
+            document.getElementById('currentCourseName').textContent = course.name;
+            document.getElementById('courseDetailName').textContent = course.name;
+            document.getElementById('courseDetailCode').textContent = course.code;
+            
+            const headerElement = document.getElementById('courseDetailHeader');
+            headerElement.style.background = course.color;
+            headerElement.querySelector('::before') && (headerElement.style.setProperty('--bg-color', course.color));
+            
+            // Set background color using pseudo-element simulation
+            headerElement.style.background = `linear-gradient(135deg, ${course.color}20 0%, ${course.color}10 100%)`;
+            
+            // Update grades display
+            updateCourseDetailGrades(courseId);
+            
+            // Show assignments
+            displayCourseAssignments(courseId);
+            
+            // Show course view
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('courseView').style.display = 'block';
+        }
+
         // Course form submission
         document.getElementById('courseForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -638,26 +780,21 @@
             // Update UI
             displayCourses();
             updateStats();
-            updateCourseSelect();
             updateSemesterOverview();
-            
-            // Show assignment form
-            document.getElementById('assignmentForm').style.display = 'block';
         });
 
-        // Assignment form submission
-        document.getElementById('addAssignmentForm').addEventListener('submit', function(e) {
+        // Course assignment form submission
+        document.getElementById('courseAssignmentForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const courseId = document.getElementById('selectCourse').value;
-            const assignmentName = document.getElementById('assignmentName').value;
-            const weight = parseFloat(document.getElementById('assignmentWeight').value);
-            const gradeInput = document.getElementById('assignmentGrade').value;
+            const assignmentName = document.getElementById('courseAssignmentName').value;
+            const weight = parseFloat(document.getElementById('courseAssignmentWeight').value);
+            const gradeInput = document.getElementById('courseAssignmentGrade').value;
             const grade = gradeInput === '' ? null : parseFloat(gradeInput);
             
             const newAssignment = {
                 id: Date.now(),
-                courseId: parseInt(courseId),
+                courseId: currentCourseId,
                 name: assignmentName,
                 weight: weight,
                 grade: grade
@@ -667,12 +804,13 @@
             saveData();
             
             // Clear form
-            document.getElementById('assignmentName').value = '';
-            document.getElementById('assignmentWeight').value = '';
-            document.getElementById('assignmentGrade').value = '';
+            document.getElementById('courseAssignmentName').value = '';
+            document.getElementById('courseAssignmentWeight').value = '';
+            document.getElementById('courseAssignmentGrade').value = '';
             
             // Update UI
-            displayCourses();
+            displayCourseAssignments(currentCourseId);
+            updateCourseDetailGrades(currentCourseId);
             updateStats();
             updateSemesterOverview();
         });
@@ -683,18 +821,6 @@
 
         function loadData() {
             displayCourses();
-        }
-
-        function updateCourseSelect() {
-            const select = document.getElementById('selectCourse');
-            select.innerHTML = '<option value="">Choose a course...</option>';
-            
-            coursesData.forEach(course => {
-                const option = document.createElement('option');
-                option.value = course.id;
-                option.textContent = `${course.code} - ${course.name}`;
-                select.appendChild(option);
-            });
         }
 
         function calculateCourseGrade(courseId) {
@@ -726,6 +852,7 @@
                 const courseSummary = document.createElement('div');
                 courseSummary.className = 'course-summary';
                 courseSummary.style.borderLeftColor = course.color;
+                courseSummary.onclick = () => showCourse(course.id);
                 
                 courseSummary.innerHTML = `
                     <div class="course-info">
@@ -759,7 +886,8 @@
                 
                 const courseCard = document.createElement('div');
                 courseCard.className = 'course-card';
-                courseCard.style.borderLeftColor = course.color;
+                courseCard.style.background = `linear-gradient(135deg, ${course.color}20 0%, ${course.color}10 100%)`;
+                courseCard.onclick = () => showCourse(course.id);
                 
                 courseCard.innerHTML = `
                     <div class="course-header">
@@ -771,32 +899,67 @@
                                 <div class="gpa-display">${gpa.toFixed(2)}</div>
                             </div>
                         ` : ''}
-                        <button class="btn btn-danger" onclick="deleteCourse(${course.id})">Delete</button>
+                        <button class="btn btn-danger" onclick="event.stopPropagation(); deleteCourse(${course.id})">Delete</button>
                     </div>
-                    <div class="assignment-list">
+                    <div class="assignment-summary">
                         ${courseAssignments.length === 0 
-                            ? '<div class="no-data" style="padding: 20px;"><p>No assignments yet</p></div>'
-                            : courseAssignments.map(assignment => `
-                                <div class="assignment-item">
-                                    <div class="assignment-header">
-                                        <span class="assignment-name">${assignment.name}</span>
-                                        <button class="btn btn-danger" onclick="deleteAssignment(${assignment.id})" style="padding: 4px 8px; font-size: 0.8rem;">Delete</button>
-                                    </div>
-                                    <div class="assignment-details">
-                                        <span class="weight-badge">Weight: ${assignment.weight}%</span>
-                                        ${assignment.grade !== null 
-                                            ? `<span class="grade-badge">Grade: ${assignment.grade}% (${getLetterGrade(assignment.grade)})</span>`
-                                            : `<span class="no-grade">Not graded yet</span>`
-                                        }
-                                    </div>
-                                </div>
-                            `).join('')
+                            ? '<div class="no-data" style="padding: 20px;"><p>No assignments yet - Click to add some!</p></div>'
+                            : `<p style="color: #666; font-size: 0.95rem;">${courseAssignments.length} assignment${courseAssignments.length !== 1 ? 's' : ''} • ${courseAssignments.filter(a => a.grade !== null).length} completed</p>`
                         }
                     </div>
                 `;
                 
                 coursesList.appendChild(courseCard);
             });
+        }
+
+        function displayCourseAssignments(courseId) {
+            const assignmentsList = document.getElementById('courseAssignmentsList');
+            const courseAssignments = assignmentsData.filter(a => a.courseId === courseId);
+            
+            if (courseAssignments.length === 0) {
+                assignmentsList.innerHTML = '<div class="no-data"><p>No assignments yet. Add your first assignment!</p></div>';
+                return;
+            }
+            
+            assignmentsList.innerHTML = '';
+            
+            courseAssignments.forEach(assignment => {
+                const assignmentItem = document.createElement('div');
+                assignmentItem.className = 'assignment-item';
+                
+                assignmentItem.innerHTML = `
+                    <div class="assignment-header">
+                        <span class="assignment-name">${assignment.name}</span>
+                        <button class="btn btn-danger" onclick="deleteAssignment(${assignment.id})" style="padding: 4px 8px; font-size: 0.8rem;">Delete</button>
+                    </div>
+                    <div class="assignment-details">
+                        <span class="weight-badge">Weight: ${assignment.weight}%</span>
+                        ${assignment.grade !== null 
+                            ? `<span class="grade-badge">Grade: ${assignment.grade}% (${getLetterGrade(assignment.grade)})</span>`
+                            : `<span class="no-grade">Not graded yet</span>`
+                        }
+                    </div>
+                `;
+                
+                assignmentsList.appendChild(assignmentItem);
+            });
+        }
+
+        function updateCourseDetailGrades(courseId) {
+            const courseGrade = calculateCourseGrade(courseId);
+            const letterGrade = getLetterGrade(courseGrade);
+            const gpa = getGPA(courseGrade);
+            const gradesContainer = document.getElementById('courseDetailGrades');
+            
+            if (courseGrade !== null) {
+                gradesContainer.innerHTML = `
+                    <div class="letter-grade-display">${letterGrade}</div>
+                    <div class="gpa-display">${gpa.toFixed(2)}</div>
+                `;
+            } else {
+                gradesContainer.innerHTML = '<div class="no-grade" style="padding: 8px 16px; border-radius: 10px;">No grades yet</div>';
+            }
         }
 
         function calculateOverallGPA() {
@@ -814,13 +977,21 @@
             return validCourses > 0 ? totalGPA / validCourses : 0;
         }
 
-        function updateStats() {
-            const completedAssignments = assignmentsData.filter(a => a.grade !== null).length;
+        function calculateOverallLetterGrade() {
+            const overallGPA = calculateOverallGPA();
+            if (overallGPA === 0) return 'N/A';
             
-            document.getElementById('totalCourses').textContent = coursesData.length;
-            document.getElementById('totalAssignments').textContent = assignmentsData.length;
-            document.getElementById('completedAssignments').textContent = completedAssignments;
-            document.getElementById('overallGPA').textContent = calculateOverallGPA().toFixed(2);
+            // Convert GPA back to percentage for letter grade calculation
+            const percentage = overallGPA * 25; // Rough conversion
+            return getLetterGrade(percentage);
+        }
+
+        function updateStats() {
+            const overallGPA = calculateOverallGPA();
+            const overallLetterGrade = calculateOverallLetterGrade();
+            
+            document.getElementById('overallGPA').textContent = overallGPA.toFixed(2);
+            document.getElementById('overallLetterGrade').textContent = overallLetterGrade;
         }
 
         function deleteCourse(courseId) {
@@ -830,11 +1001,11 @@
                 saveData();
                 displayCourses();
                 updateStats();
-                updateCourseSelect();
                 updateSemesterOverview();
                 
-                if (coursesData.length === 0) {
-                    document.getElementById('assignmentForm').style.display = 'none';
+                // If we're currently viewing this course, go back to dashboard
+                if (currentCourseId === courseId) {
+                    showDashboard();
                 }
             }
         }
@@ -843,6 +1014,13 @@
             if (confirm('Are you sure you want to delete this assignment?')) {
                 assignmentsData = assignmentsData.filter(assignment => assignment.id !== assignmentId);
                 saveData();
+                
+                // Update current course view if we're in course view
+                if (currentCourseId) {
+                    displayCourseAssignments(currentCourseId);
+                    updateCourseDetailGrades(currentCourseId);
+                }
+                
                 displayCourses();
                 updateStats();
                 updateSemesterOverview();
