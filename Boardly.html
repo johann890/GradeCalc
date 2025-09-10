@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boardly - University Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: fit-content;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            width: auto;
+            margin-left: 10px;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .course-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .course-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        .course-code {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .gpa-display {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-left: 15px;
+        }
+
+        .assignment-list {
+            margin-top: 20px;
+        }
+
+        .assignment-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .assignment-name {
+            font-weight: 600;
+            color: #444;
+        }
+
+        .assignment-grade {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .assignment-grade.excellent {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #2d5a87;
+        }
+
+        .assignment-grade.good {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+            color: #6b4e71;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .course-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .course-code, .gpa-display {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Boardly</h1>
+            <p>Your University Dashboard - Track courses, assignments, and grades</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCourses">0</div>
+                <div class="stat-label">Total Courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalAssignments">0</div>
+                <div class="stat-label">Total Assignments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="overallGPA">0.0</div>
+                <div class="stat-label">Overall GPA</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="sidebar">
+                <h2>Add New Course</h2>
+                <form id="courseForm">
+                    <div class="form-group">
+                        <label for="courseName">Course Name</label>
+                        <input type="text" id="courseName" required placeholder="e.g., Computer Science 101">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseCode">Course Code</label>
+                        <input type="text" id="courseCode" required placeholder="e.g., CS101">
+                    </div>
+                    <button type="submit" class="btn">Add Course</button>
+                </form>
+
+                <div id="assignmentForm" style="display: none; margin-top: 30px;">
+                    <h2>Add Assignment</h2>
+                    <form id="addAssignmentForm">
+                        <div class="form-group">
+                            <label for="selectCourse">Select Course</label>
+                            <select id="selectCourse" required>
+                                <option value="">Choose a course...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignmentName">Assignment Name</label>
+                            <input type="text" id="assignmentName" required placeholder="e.g., Midterm Exam">
+                        </div>
+                        <div class="form-group">
+                            <label for="assignmentGrade">Grade (%)</label>
+                            <input type="number" id="assignmentGrade" min="0" max="100" required placeholder="85">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Add Assignment</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <h2 style="margin-bottom: 25px; color: #333;">Your Courses</h2>
+                <div id="coursesList">
+                    <div class="no-data">
+                        <p>No courses added yet. Add your first course to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage - using in-memory objects instead of localStorage
+        let coursesData = [];
+        let assignmentsData = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            updateStats();
+            updateCourseSelect();
+        });
+
+        // Course form submission
+        document.getElementById('courseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const courseName = document.getElementById('courseName').value;
+            const courseCode = document.getElementById('courseCode').value;
+            
+            // Check if course already exists
+            if (coursesData.find(course => course.code === courseCode)) {
+                alert('Course with this code already exists!');
+                return;
+            }
+            
+            const newCourse = {
+                id: Date.now(),
+                name: courseName,
+                code: courseCode
+            };
+            
+            coursesData.push(newCourse);
+            saveData();
+            
+            // Clear form
+            document.getElementById('courseName').value = '';
+            document.getElementById('courseCode').value = '';
+            
+            // Update UI
+            displayCourses();
+            updateStats();
+            updateCourseSelect();
+            
+            // Show assignment form
+            document.getElementById('assignmentForm').style.display = 'block';
+        });
+
+        // Assignment form submission
+        document.getElementById('addAssignmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const courseId = document.getElementById('selectCourse').value;
+            const assignmentName = document.getElementById('assignmentName').value;
+            const grade = parseFloat(document.getElementById('assignmentGrade').value);
+            
+            const newAssignment = {
+                id: Date.now(),
+                courseId: parseInt(courseId),
+                name: assignmentName,
+                grade: grade
+            };
+            
+            assignmentsData.push(newAssignment);
+            saveData();
+            
+            // Clear form
+            document.getElementById('assignmentName').value = '';
+            document.getElementById('assignmentGrade').value = '';
+            
+            // Update UI
+            displayCourses();
+            updateStats();
+        });
+
+        function saveData() {
+            // Data is stored in memory during the session
+            // In a real implementation, you would use localStorage here
+        }
+
+        function loadData() {
+            // Data is loaded from memory
+            // In a real implementation, you would load from localStorage here
+            displayCourses();
+        }
+
+        function updateCourseSelect() {
+            const select = document.getElementById('selectCourse');
+            select.innerHTML = '<option value="">Choose a course...</option>';
+            
+            coursesData.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = `${course.code} - ${course.name}`;
+                select.appendChild(option);
+            });
+        }
+
+        function displayCourses() {
+            const coursesList = document.getElementById('coursesList');
+            
+            if (coursesData.length === 0) {
+                coursesList.innerHTML = '<div class="no-data"><p>No courses added yet. Add your first course to get started!</p></div>';
+                return;
+            }
+            
+            coursesList.innerHTML = '';
+            
+            coursesData.forEach(course => {
+                const courseAssignments = assignmentsData.filter(a => a.courseId === course.id);
+                const courseGPA = calculateCourseGPA(courseAssignments);
+                
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card';
+                
+                courseCard.innerHTML = `
+                    <div class="course-header">
+                        <div class="course-title">${course.name}</div>
+                        <div class="course-code">${course.code}</div>
+                        ${courseGPA !== null ? `<div class="gpa-display">${courseGPA.toFixed(2)}</div>` : ''}
+                        <button class="btn btn-danger" onclick="deleteCourse(${course.id})">Delete</button>
+                    </div>
+                    <div class="assignment-list">
+                        ${courseAssignments.length === 0 
+                            ? '<div class="no-data" style="padding: 20px;"><p>No assignments yet</p></div>'
+                            : courseAssignments.map(assignment => `
+                                <div class="assignment-item">
+                                    <span class="assignment-name">${assignment.name}</span>
+                                    <div style="display: flex; align-items: center;">
+                                        <span class="assignment-grade ${getGradeClass(assignment.grade)}">${assignment.grade}%</span>
+                                        <button class="btn btn-danger" onclick="deleteAssignment(${assignment.id})" style="margin-left: 10px; padding: 4px 8px; font-size: 0.8rem;">Delete</button>
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+                `;
+                
+                coursesList.appendChild(courseCard);
+            });
+        }
+
+        function calculateCourseGPA(assignments) {
+            if (assignments.length === 0) return null;
+            
+            const average = assignments.reduce((sum, a) => sum + a.grade, 0) / assignments.length;
+            return average / 25; // Convert percentage to 4.0 scale (rough approximation)
+        }
+
+        function calculateOverallGPA() {
+            if (assignmentsData.length === 0) return 0;
+            
+            const average = assignmentsData.reduce((sum, a) => sum + a.grade, 0) / assignmentsData.length;
+            return average / 25; // Convert percentage to 4.0 scale
+        }
+
+        function getGradeClass(grade) {
+            if (grade >= 90) return 'excellent';
+            if (grade >= 80) return 'good';
+            return '';
+        }
+
+        function updateStats() {
+            document.getElementById('totalCourses').textContent = coursesData.length;
+            document.getElementById('totalAssignments').textContent = assignmentsData.length;
+            document.getElementById('overallGPA').textContent = calculateOverallGPA().toFixed(2);
+        }
+
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course and all its assignments?')) {
+                coursesData = coursesData.filter(course => course.id !== courseId);
+                assignmentsData = assignmentsData.filter(assignment => assignment.courseId !== courseId);
+                saveData();
+                displayCourses();
+                updateStats();
+                updateCourseSelect();
+                
+                if (coursesData.length === 0) {
+                    document.getElementById('assignmentForm').style.display = 'none';
+                }
+            }
+        }
+
+        function deleteAssignment(assignmentId) {
+            if (confirm('Are you sure you want to delete this assignment?')) {
+                assignmentsData = assignmentsData.filter(assignment => assignment.id !== assignmentId);
+                saveData();
+                displayCourses();
+                updateStats();
+            }
+        }
+    </script>
+</body>
+</html>
